@@ -8,6 +8,7 @@ Required:
 - OCI image reference pinned by digest
 - compatibility declaration
 - support/security contact
+- schema compliance with `schemas/plugin-manifest-v1.yaml`
 
 Preferred:
 

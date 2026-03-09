@@ -2,7 +2,7 @@ api_version: v1
 name: channel-telegram
 publisher: aisopsflow
 plugin_version: 0.1.0
-image: ghcr.io/aisopsflow/channel-telegram:0.1.0
+image: ghcr.io/aisopsflow/channel-telegram@sha256:3333333333333333333333333333333333333333333333333333333333333333
 entrypoints:
   send:
     path: /send

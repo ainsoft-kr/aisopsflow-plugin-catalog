@@ -1,0 +1,51 @@
+type: object
+required:
+  - api_version
+  - name
+  - publisher
+  - plugin_version
+  - image
+  - compatibility
+  - capabilities
+properties:
+  api_version:
+    type: string
+    const: v1
+  name:
+    type: string
+    min_length: 1
+  publisher:
+    type: string
+    min_length: 1
+  plugin_version:
+    type: string
+    min_length: 1
+  image:
+    type: string
+    pattern: '.+@sha256:[a-fA-F0-9]{64}$'
+  compatibility:
+    type: object
+    required:
+      - min_core
+      - min_runner
+      - runner_plugin_api
+    properties:
+      min_core:
+        type: string
+        min_length: 1
+      min_runner:
+        type: string
+        min_length: 1
+      runner_plugin_api:
+        type: string
+        const: v1
+  capabilities:
+    type: array
+    min_items: 1
+    items:
+      type: string
+  verification:
+    type: object
+    properties:
+      status:
+        type: string

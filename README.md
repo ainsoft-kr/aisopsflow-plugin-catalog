@@ -9,9 +9,13 @@ Public catalog metadata for AisOpsFlow plugins.
 - record verification status
 - separate catalog metadata from private product code
 
+This repository does not build or publish container images.
+It only tracks plugin metadata, compatibility, and verification state.
+
 ## Layout
 
 - `plugins/official/`
 - `compatibility/`
+- `schemas/`
 - `verification/`
 - `docs/`

@@ -2,7 +2,7 @@ api_version: v1
 name: kakao-provider-mock
 publisher: aisopsflow
 plugin_version: 0.1.0
-image: ghcr.io/aisopsflow/kakao-provider-mock:0.1.0
+image: ghcr.io/aisopsflow/kakao-provider-mock@sha256:4444444444444444444444444444444444444444444444444444444444444444
 entrypoints:
   send:
     path: /kakao/alimtalk/send
