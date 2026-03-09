@@ -1,0 +1,17 @@
+api_version: v1
+name: channel-slack
+publisher: aisopsflow
+plugin_version: 0.1.0
+image: ghcr.io/aisopsflow/channel-slack:0.1.0
+entrypoints:
+  send:
+    path: /send
+compatibility:
+  min_core: 1.0.0
+  min_runner: 1.0.0
+  runner_plugin_api: v1
+capabilities:
+  - notify
+  - signed_internal_auth
+verification:
+  status: official

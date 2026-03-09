@@ -1,0 +1,7 @@
+api_version: v1
+compatibility_matrix:
+  runner_plugin_api: v1
+  supported_core_ranges:
+    - '>=1.0.0 <2.0.0'
+  supported_runner_ranges:
+    - '>=1.0.0 <2.0.0'
