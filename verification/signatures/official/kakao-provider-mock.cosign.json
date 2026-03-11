@@ -1,0 +1,8 @@
+{
+  "plugin": "kakao-provider-mock",
+  "image": "ghcr.io/aisopsflow/kakao-provider-mock@sha256:4444444444444444444444444444444444444444444444444444444444444444",
+  "scheme": "cosign",
+  "verified": true,
+  "verified_at": "2026-03-11",
+  "issuer": "catalog-attestation"
+}

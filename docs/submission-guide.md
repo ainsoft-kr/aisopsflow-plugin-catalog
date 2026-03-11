@@ -10,8 +10,14 @@ Required:
 - support/security contact
 - schema compliance with `schemas/plugin-manifest-v1.yaml`
 
+Required for `verification.status: official`:
+
+- `verification.signed_image` metadata
+- `verification.signature_ref` artifact committed to this catalog
+- `verification.vulnerabilities` summary
+- `verification.vulnerabilities.report_ref` artifact committed to this catalog
+
 Preferred:
 
-- image signature
 - SBOM
 - conformance test report

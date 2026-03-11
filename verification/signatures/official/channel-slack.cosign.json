@@ -1,0 +1,8 @@
+{
+  "plugin": "channel-slack",
+  "image": "ghcr.io/aisopsflow/channel-slack@sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "scheme": "cosign",
+  "verified": true,
+  "verified_at": "2026-03-11",
+  "issuer": "catalog-attestation"
+}

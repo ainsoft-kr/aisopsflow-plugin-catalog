@@ -1,0 +1,8 @@
+{
+  "plugin": "channel-telegram",
+  "image": "ghcr.io/aisopsflow/channel-telegram@sha256:3333333333333333333333333333333333333333333333333333333333333333",
+  "scheme": "cosign",
+  "verified": true,
+  "verified_at": "2026-03-11",
+  "issuer": "catalog-attestation"
+}

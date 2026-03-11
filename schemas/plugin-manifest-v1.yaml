@@ -46,6 +46,58 @@ properties:
       type: string
   verification:
     type: object
+    required:
+      - status
     properties:
       status:
         type: string
+      signature_ref:
+        type: string
+        min_length: 1
+      signed_image:
+        type: object
+        required:
+          - scheme
+          - identity
+          - verified
+          - issued_at
+        properties:
+          scheme:
+            type: string
+            min_length: 1
+          identity:
+            type: string
+            min_length: 1
+          verified:
+            type: boolean
+          issued_at:
+            type: string
+            min_length: 1
+      vulnerabilities:
+        type: object
+        required:
+          - scanner
+          - critical
+          - high
+          - medium
+          - low
+          - scanned_at
+          - report_ref
+        properties:
+          scanner:
+            type: string
+            min_length: 1
+          critical:
+            type: integer
+          high:
+            type: integer
+          medium:
+            type: integer
+          low:
+            type: integer
+          scanned_at:
+            type: string
+            min_length: 1
+          report_ref:
+            type: string
+            min_length: 1

@@ -1,0 +1,8 @@
+{
+  "plugin": "channel-email",
+  "image": "ghcr.io/aisopsflow/channel-email@sha256:2222222222222222222222222222222222222222222222222222222222222222",
+  "scheme": "cosign",
+  "verified": true,
+  "verified_at": "2026-03-11",
+  "issuer": "catalog-attestation"
+}
