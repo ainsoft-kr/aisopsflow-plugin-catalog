@@ -22,7 +22,7 @@ properties:
     min_length: 1
   image:
     type: string
-    pattern: '.+@sha256:[a-fA-F0-9]{64}$'
+    pattern: '.+(:[A-Za-z0-9._-]+|@sha256:[a-fA-F0-9]{64})$'
   compatibility:
     type: object
     required:

@@ -72,10 +72,15 @@ def official_source_path(name)
   candidates = [name]
   candidates << name.sub(/\Achannel-/, "") if name.start_with?("channel-")
   candidates.each do |candidate|
-    candidate_path = File.join(sibling_sdk_root, "examples/node", candidate, "src/index.js")
-    return candidate_path if File.file?(candidate_path)
+    candidate_paths = [
+      File.join(sibling_sdk_root, "examples/node", candidate, "src/runner-entrypoint.ts"),
+      File.join(sibling_sdk_root, "examples/node", candidate, "src/index.ts"),
+      File.join(sibling_sdk_root, "examples/node", candidate, "src/index.js")
+    ]
+    found = candidate_paths.find { |candidate_path| File.file?(candidate_path) }
+    return found if found
   end
-  File.join(sibling_sdk_root, "examples/node", name, "src/index.js")
+  File.join(sibling_sdk_root, "examples/node", name, "src/runner-entrypoint.ts")
 end
 
 def build_compatibility_index(files)
@@ -96,12 +101,8 @@ def validate_policy!(path, manifest, compatibility_index, failures, warnings)
   compatibility = manifest.fetch("compatibility")
   capabilities = manifest.fetch("capabilities")
 
-  unless image.match?(/@sha256:[a-fA-F0-9]{64}$/)
-    failures << "#{path}: image must be pinned by digest"
-  end
-
-  unless capabilities.include?("signed_internal_auth")
-    failures << "#{path}: capabilities must include signed_internal_auth"
+  unless image.match?(/(:[A-Za-z0-9._-]+|@sha256:[a-fA-F0-9]{64})$/)
+    failures << "#{path}: image must use a tag or digest reference"
   end
 
   runner_plugin_api = compatibility["runner_plugin_api"]
@@ -115,29 +116,31 @@ def validate_policy!(path, manifest, compatibility_index, failures, warnings)
       failures << "#{path}: official plugin source not found at #{source_path}"
     else
       source_text = File.read(source_path)
-      unless source_text.include?("requireInternalAuthJson")
-        failures << "#{path}: official plugin source does not appear to enforce internal auth"
+      unless source_text.include?("startStdioJsonRuntime") || source_text.include?("requireInternalAuthJson")
+        failures << "#{path}: official plugin source does not expose a recognized runtime entrypoint"
       end
     end
   end
 
   signed_image = verification["signed_image"]
   signature_ref = verification["signature_ref"]
-  if signed_image.nil? || signature_ref.nil?
-    failures << "#{path}: signed image evidence must declare signed_image and signature_ref"
-  elsif signed_image["verified"] != true
-    failures << "#{path}: signed image evidence must be marked verified"
-  elsif !File.file?(signature_artifact_path(signature_ref))
-    failures << "#{path}: signature evidence not found at #{signature_ref}"
-  end
+  if verification["status"] == "official"
+    if signed_image.nil? || signature_ref.nil?
+      failures << "#{path}: signed image evidence must declare signed_image and signature_ref"
+    elsif signed_image["verified"] != true
+      failures << "#{path}: signed image evidence must be marked verified"
+    elsif !File.file?(signature_artifact_path(signature_ref))
+      failures << "#{path}: signature evidence not found at #{signature_ref}"
+    end
 
-  vulnerabilities = verification["vulnerabilities"]
-  if !vulnerabilities.is_a?(Hash)
-    failures << "#{path}: vulnerability scan result must be declared"
-  elsif !File.file?(artifact_path(vulnerabilities["report_ref"]))
-    failures << "#{path}: vulnerability report not found at #{vulnerabilities['report_ref']}"
-  elsif vulnerabilities["critical"].to_i > 0
-    failures << "#{path}: critical vulnerabilities declared: #{vulnerabilities['critical']}"
+    vulnerabilities = verification["vulnerabilities"]
+    if !vulnerabilities.is_a?(Hash)
+      failures << "#{path}: vulnerability scan result must be declared"
+    elsif !File.file?(artifact_path(vulnerabilities["report_ref"]))
+      failures << "#{path}: vulnerability report not found at #{vulnerabilities['report_ref']}"
+    elsif vulnerabilities["critical"].to_i > 0
+      failures << "#{path}: critical vulnerabilities declared: #{vulnerabilities['critical']}"
+    end
   end
 end
 

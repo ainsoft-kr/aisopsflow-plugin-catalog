@@ -1,8 +1,8 @@
 api_version: v1
-name: channel-slack
+name: microsoft-office
 publisher: aisopsflow
 plugin_version: 0.1.0
-image: ghcr.io/aisopsflow/channel-slack:latest
+image: ghcr.io/aisopsflow/microsoft-office:latest
 entrypoints:
   invoke:
     path: stdio-json
@@ -11,7 +11,8 @@ compatibility:
   min_runner: 1.0.0
   runner_plugin_api: v1
 capabilities:
-  - slack.send
-  - slack.approval
+  - microsoft.office.read
+  - microsoft.office.write
+  - microsoft.office.delete
 verification:
   status: draft

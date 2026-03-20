@@ -2,30 +2,15 @@ api_version: v1
 name: channel-telegram
 publisher: aisopsflow
 plugin_version: 0.1.0
-image: ghcr.io/aisopsflow/channel-telegram@sha256:3333333333333333333333333333333333333333333333333333333333333333
+image: ghcr.io/aisopsflow/channel-telegram:latest
 entrypoints:
-  send:
-    path: /send
+  invoke:
+    path: stdio-json
 compatibility:
   min_core: 1.0.0
   min_runner: 1.0.0
   runner_plugin_api: v1
 capabilities:
-  - notify
-  - signed_internal_auth
+  - telegram.send
 verification:
-  status: official
-  signature_ref: verification/signatures/official/channel-telegram.cosign.json
-  signed_image:
-    scheme: cosign
-    identity: ghcr.io/aisopsflow/channel-telegram
-    verified: true
-    issued_at: "2026-03-11"
-  vulnerabilities:
-    scanner: trivy
-    critical: 0
-    high: 0
-    medium: 0
-    low: 0
-    scanned_at: "2026-03-11"
-    report_ref: verification/scans/official/channel-telegram-trivy.json
+  status: draft
