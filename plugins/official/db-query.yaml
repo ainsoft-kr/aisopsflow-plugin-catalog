@@ -1,8 +1,8 @@
 api_version: v1
-name: db-query-mock
+name: db-query
 publisher: aisopsflow
-plugin_version: 0.1.0
-image: ghcr.io/aisopsflow/db-query-mock:latest
+plugin_version: 0.2.0
+image: ghcr.io/aisopsflow/db-query:latest
 entrypoints:
   invoke:
     path: stdio-json

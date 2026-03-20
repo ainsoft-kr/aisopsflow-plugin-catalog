@@ -1,8 +1,8 @@
 api_version: v1
-name: kakao-provider-mock
+name: kakao-provider
 publisher: aisopsflow
-plugin_version: 0.1.0
-image: ghcr.io/aisopsflow/kakao-provider-mock:latest
+plugin_version: 0.2.0
+image: ghcr.io/aisopsflow/kakao-provider:latest
 entrypoints:
   invoke:
     path: stdio-json

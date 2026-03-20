@@ -1,5 +1,5 @@
 {
-  "plugin": "kakao-provider-mock",
+  "plugin": "kakao-provider",
   "scanner": "trivy",
   "scanned_at": "2026-03-11",
   "critical": 0,
