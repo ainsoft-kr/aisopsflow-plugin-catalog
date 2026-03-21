@@ -1,0 +1,18 @@
+api_version: v1
+name: microsoft-office-graph
+publisher: aisopsflow
+plugin_version: 0.1.0
+image: ghcr.io/ainsoft-kr/aisopsflow/plugin/provider/microsoft-office-graph:latest
+entrypoints:
+  invoke:
+    path: stdio-json
+compatibility:
+  min_core: 1.0.0
+  min_runner: 1.0.0
+  runner_plugin_api: v1
+capabilities:
+  - microsoft.office.graph.read
+  - microsoft.office.graph.write
+  - microsoft.office.graph.delete
+verification:
+  status: draft

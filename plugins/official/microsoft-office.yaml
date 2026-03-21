@@ -2,7 +2,7 @@ api_version: v1
 name: microsoft-office
 publisher: aisopsflow
 plugin_version: 0.1.0
-image: ghcr.io/aisopsflow/microsoft-office:latest
+image: ghcr.io/ainsoft-kr/aisopsflow/plugin/provider/microsoft-office:latest
 entrypoints:
   invoke:
     path: stdio-json
@@ -14,5 +14,8 @@ capabilities:
   - microsoft.office.read
   - microsoft.office.write
   - microsoft.office.delete
+  - office.excel.generate
+  - office.word.generate
+  - office.powerpoint.generate
 verification:
   status: draft

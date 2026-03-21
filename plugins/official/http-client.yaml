@@ -1,8 +1,8 @@
 api_version: v1
-name: db-query
+name: http-client
 publisher: aisopsflow
-plugin_version: 0.2.0
-image: ghcr.io/ainsoft-kr/aisopsflow/plugin/provider/db-query:latest
+plugin_version: 0.1.0
+image: ghcr.io/ainsoft-kr/aisopsflow/plugin/provider/http-client:latest
 entrypoints:
   invoke:
     path: stdio-json
@@ -11,8 +11,6 @@ compatibility:
   min_runner: 1.0.0
   runner_plugin_api: v1
 capabilities:
-  - db.query
-  - db.read
-  - db.explain
+  - http.request
 verification:
   status: draft
