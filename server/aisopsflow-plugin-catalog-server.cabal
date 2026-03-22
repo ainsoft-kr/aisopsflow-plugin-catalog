@@ -1,0 +1,99 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.39.1.
+--
+-- see: https://github.com/sol/hpack
+
+name:           aisopsflow-plugin-catalog-server
+version:        0.1.0.0
+license:        MIT
+build-type:     Simple
+
+library
+  exposed-modules:
+      PluginCatalogServer.Application
+      PluginCatalogServer.Auth
+      PluginCatalogServer.Foundation
+      PluginCatalogServer.Model
+      PluginCatalogServer.Settings
+  other-modules:
+      PluginCatalogServer.Domain.Manifest
+      PluginCatalogServer.Domain.Resolve
+      PluginCatalogServer.Handler.Admin
+      PluginCatalogServer.Handler.Artifacts
+      PluginCatalogServer.Handler.Health
+      PluginCatalogServer.Handler.Plugins
+      PluginCatalogServer.Handler.Publish
+  hs-source-dirs:
+      src
+  build-depends:
+      aeson
+    , base >=4.18 && <5
+    , base64-bytestring
+    , blaze-html
+    , bytestring
+    , cookie
+    , cryptonite
+    , directory
+    , filepath
+    , http-client
+    , http-client-tls
+    , http-types
+    , monad-logger
+    , persistent
+    , persistent-sqlite
+    , persistent-template
+    , process
+    , resource-pool
+    , shakespeare
+    , text
+    , time
+    , transformers
+    , unordered-containers
+    , wai
+    , warp
+    , yaml
+    , yesod
+    , yesod-core
+    , yesod-form
+  default-language: Haskell2010
+
+executable aisopsflow-plugin-catalog-server
+  main-is: Main.hs
+  other-modules:
+      Paths_aisopsflow_plugin_catalog_server
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      aeson
+    , aisopsflow-plugin-catalog-server
+    , base >=4.18 && <5
+    , base64-bytestring
+    , blaze-html
+    , bytestring
+    , cookie
+    , cryptonite
+    , directory
+    , filepath
+    , http-client
+    , http-client-tls
+    , http-types
+    , monad-logger
+    , persistent
+    , persistent-sqlite
+    , persistent-template
+    , process
+    , resource-pool
+    , shakespeare
+    , text
+    , time
+    , transformers
+    , unordered-containers
+    , wai
+    , warp
+    , yaml
+    , yesod
+    , yesod-core
+    , yesod-form
+  default-language: Haskell2010

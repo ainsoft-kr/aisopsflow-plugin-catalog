@@ -1,0 +1,92 @@
+name: Catalog Publish Export
+
+on:
+  workflow_dispatch:
+    inputs:
+      plugin_name:
+        description: Plugin name
+        required: true
+        type: string
+      version:
+        description: Plugin version
+        required: true
+        type: string
+      publisher:
+        description: Publisher
+        required: true
+        type: string
+        default: aisopsflow
+      runtime:
+        description: Runtime
+        required: true
+        type: string
+        default: node
+      platform:
+        description: Platform
+        required: true
+        type: string
+        default: linux-amd64
+      entrypoint:
+        description: Entrypoint inside bundle
+        required: true
+        type: string
+        default: dist/runner-entrypoint.js
+      capabilities_csv:
+        description: Comma-separated capabilities
+        required: true
+        type: string
+      bundle_path:
+        description: Bundle path inside repo checkout
+        required: true
+        type: string
+      output_path:
+        description: Optional catalog manifest output path
+        required: false
+        type: string
+
+jobs:
+  publish-export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Publish and export catalog manifest
+        env:
+          PLUGIN_CATALOG_BASE_URL: ${{ secrets.PLUGIN_CATALOG_BASE_URL }}
+          PLUGIN_CATALOG_PUBLISH_TOKEN: ${{ secrets.PLUGIN_CATALOG_PUBLISH_TOKEN }}
+        run: |
+          test -n "$PLUGIN_CATALOG_BASE_URL"
+          test -n "$PLUGIN_CATALOG_PUBLISH_TOKEN"
+          chmod +x scripts/export-catalog-manifest.sh scripts/publish-and-export.sh
+          if [ -n "${{ inputs.output_path }}" ]; then
+            bash scripts/publish-and-export.sh \
+              "$PLUGIN_CATALOG_BASE_URL" \
+              "$PLUGIN_CATALOG_PUBLISH_TOKEN" \
+              "${{ inputs.plugin_name }}" \
+              "${{ inputs.version }}" \
+              "${{ inputs.publisher }}" \
+              "${{ inputs.runtime }}" \
+              "${{ inputs.platform }}" \
+              "${{ inputs.entrypoint }}" \
+              "${{ inputs.capabilities_csv }}" \
+              "${{ inputs.bundle_path }}" \
+              "${{ inputs.output_path }}"
+          else
+            bash scripts/publish-and-export.sh \
+              "$PLUGIN_CATALOG_BASE_URL" \
+              "$PLUGIN_CATALOG_PUBLISH_TOKEN" \
+              "${{ inputs.plugin_name }}" \
+              "${{ inputs.version }}" \
+              "${{ inputs.publisher }}" \
+              "${{ inputs.runtime }}" \
+              "${{ inputs.platform }}" \
+              "${{ inputs.entrypoint }}" \
+              "${{ inputs.capabilities_csv }}" \
+              "${{ inputs.bundle_path }}"
+          fi
+
+      - name: Upload exported manifest artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: catalog-manifest-${{ inputs.plugin_name }}-${{ inputs.version }}
+          path: plugins/official/*.yaml

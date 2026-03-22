@@ -1,0 +1,5 @@
+/server/.stack-work/
+/server/artifacts/
+/server/plugin-catalog.db
+/server/client_session_key.aes
+.DS_Store

@@ -4,7 +4,6 @@ required:
   - name
   - publisher
   - plugin_version
-  - image
   - compatibility
   - capabilities
 properties:
@@ -23,6 +22,25 @@ properties:
   image:
     type: string
     pattern: '.+(:[A-Za-z0-9._-]+|@sha256:[a-fA-F0-9]{64})$'
+  plugin_ref:
+    type: string
+    min_length: 1
+  artifact:
+    type: object
+    required:
+      - url
+    properties:
+      url:
+        type: string
+        min_length: 1
+      sha256:
+        type: string
+        pattern: '^[a-fA-F0-9]{64}$'
+      size_bytes:
+        type: integer
+  manifest_path:
+    type: string
+    min_length: 1
   compatibility:
     type: object
     required:

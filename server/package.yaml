@@ -1,0 +1,63 @@
+name: aisopsflow-plugin-catalog-server
+version: 0.1.0.0
+license: MIT
+
+dependencies:
+  - base >= 4.18 && < 5
+  - aeson
+  - base64-bytestring
+  - blaze-html
+  - bytestring
+  - cryptonite
+  - cookie
+  - directory
+  - filepath
+  - http-client
+  - http-client-tls
+  - http-types
+  - monad-logger
+  - process
+  - persistent
+  - persistent-sqlite
+  - persistent-template
+  - resource-pool
+  - shakespeare
+  - text
+  - time
+  - transformers
+  - unordered-containers
+  - wai
+  - warp
+  - yesod
+  - yesod-core
+  - yesod-form
+  - yaml
+
+executables:
+  aisopsflow-plugin-catalog-server:
+    main: Main.hs
+    source-dirs: app
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    dependencies:
+      - aisopsflow-plugin-catalog-server
+
+library:
+  source-dirs:
+    - src
+  exposed-modules:
+    - PluginCatalogServer.Application
+    - PluginCatalogServer.Auth
+    - PluginCatalogServer.Foundation
+    - PluginCatalogServer.Model
+    - PluginCatalogServer.Settings
+  other-modules:
+    - PluginCatalogServer.Domain.Manifest
+    - PluginCatalogServer.Domain.Resolve
+    - PluginCatalogServer.Handler.Admin
+    - PluginCatalogServer.Handler.Artifacts
+    - PluginCatalogServer.Handler.Health
+    - PluginCatalogServer.Handler.Plugins
+    - PluginCatalogServer.Handler.Publish

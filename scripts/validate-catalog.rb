@@ -96,12 +96,14 @@ end
 
 def validate_policy!(path, manifest, compatibility_index, failures, warnings)
   name = manifest.fetch("name")
-  image = manifest.fetch("image")
+  plugin_source_ref = manifest["plugin_ref"] || manifest["image"] || manifest.dig("artifact", "url")
   verification = manifest["verification"].is_a?(Hash) ? manifest["verification"] : {}
   compatibility = manifest.fetch("compatibility")
   capabilities = manifest.fetch("capabilities")
 
-  unless image.match?(/(:[A-Za-z0-9._-]+|@sha256:[a-fA-F0-9]{64})$/)
+  if plugin_source_ref.nil? || plugin_source_ref.strip.empty?
+    failures << "#{path}: one of image, plugin_ref, or artifact.url must be declared"
+  elsif manifest.key?("image") && !plugin_source_ref.match?(/(:[A-Za-z0-9._-]+|@sha256:[a-fA-F0-9]{64})$/)
     failures << "#{path}: image must use a tag or digest reference"
   end
 
@@ -125,12 +127,20 @@ def validate_policy!(path, manifest, compatibility_index, failures, warnings)
   signed_image = verification["signed_image"]
   signature_ref = verification["signature_ref"]
   if verification["status"] == "official"
-    if signed_image.nil? || signature_ref.nil?
-      failures << "#{path}: signed image evidence must declare signed_image and signature_ref"
-    elsif signed_image["verified"] != true
-      failures << "#{path}: signed image evidence must be marked verified"
-    elsif !File.file?(signature_artifact_path(signature_ref))
+    if manifest.key?("image")
+      if signed_image.nil? || signature_ref.nil?
+        failures << "#{path}: signed image evidence must declare signed_image and signature_ref"
+      elsif signed_image["verified"] != true
+        failures << "#{path}: signed image evidence must be marked verified"
+      elsif !File.file?(signature_artifact_path(signature_ref))
+        failures << "#{path}: signature evidence not found at #{signature_ref}"
+      end
+    elsif signature_ref && !File.file?(signature_artifact_path(signature_ref))
       failures << "#{path}: signature evidence not found at #{signature_ref}"
+    elsif manifest.key?("artifact") && !manifest.dig("artifact", "sha256").to_s.match?(/\A[a-fA-F0-9]{64}\z/)
+      failures << "#{path}: artifact.sha256 must be declared for official bundle-based plugins"
+    elsif signed_image && signed_image["verified"] != true
+      failures << "#{path}: signed image evidence must be marked verified"
     end
 
     vulnerabilities = verification["vulnerabilities"]

@@ -1,16 +1,14 @@
 api_version: v1
-name: kakao-provider
-publisher: aisopsflow
-plugin_version: 0.2.0
-image: ghcr.io/aisopsflow/kakao-provider:latest
-entrypoints:
-  invoke:
-    path: stdio-json
-compatibility:
-  min_core: 1.0.0
-  min_runner: 1.0.0
-  runner_plugin_api: v1
 capabilities:
-  - kakao.alimtalk.send
+- kakao.alimtalk.send
+compatibility:
+  min_core: 0.1.0
+  min_runner: 0.1.0
+  runner_plugin_api: v1
+manifest_path: runner-plugin.yaml
+name: kakao-provider
+plugin_ref: http://127.0.0.1:3100/artifacts/kakao-provider/0.2.0/bundle
+plugin_version: 0.2.0
+publisher: aisopsflow
 verification:
   status: draft

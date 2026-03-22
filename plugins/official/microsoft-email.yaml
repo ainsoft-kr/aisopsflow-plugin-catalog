@@ -1,17 +1,15 @@
 api_version: v1
-name: microsoft-email
-publisher: aisopsflow
-plugin_version: 0.1.0
-image: ghcr.io/aisopsflow/microsoft-email:latest
-entrypoints:
-  invoke:
-    path: stdio-json
-compatibility:
-  min_core: 1.0.0
-  min_runner: 1.0.0
-  runner_plugin_api: v1
 capabilities:
-  - microsoft.mail.read
-  - microsoft.mail.send
+- microsoft.mail.read
+- microsoft.mail.send
+compatibility:
+  min_core: 0.1.0
+  min_runner: 0.1.0
+  runner_plugin_api: v1
+manifest_path: runner-plugin.yaml
+name: microsoft-email
+plugin_ref: http://127.0.0.1:3100/artifacts/microsoft-email/0.1.0/bundle
+plugin_version: 0.1.0
+publisher: aisopsflow
 verification:
   status: draft

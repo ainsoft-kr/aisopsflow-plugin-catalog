@@ -3,8 +3,10 @@
 A verified plugin should satisfy:
 
 - manifest schema valid
-- image pinned by digest
-- signed image evidence declared in manifest and attached as a catalog artifact
+- plugin source declared via `image`, `plugin_ref`, or `artifact.url`
+- image pinned by digest for OCI-based plugins
+- signed image evidence declared in manifest and attached as a catalog artifact for OCI-based plugins
+- artifact digest declared in manifest for bundle-based plugins
 - internal auth verification implemented
 - compatibility declared
 - vulnerability scan summary declared in manifest and attached as a catalog artifact
