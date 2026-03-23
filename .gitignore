@@ -1,5 +1,7 @@
 /server/.stack-work/
 /server/artifacts/
 /server/plugin-catalog.db
+/server/plugin-catalog.db-shm
+/server/plugin-catalog.db-wal
 /server/client_session_key.aes
 .DS_Store
