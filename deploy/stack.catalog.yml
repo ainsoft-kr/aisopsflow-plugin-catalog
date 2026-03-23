@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  catalog:
+    image: aisopsflow-plugin-catalog-server:swarm-local
+    environment:
+      PLUGIN_CATALOG_PORT: "3100"
+      PLUGIN_CATALOG_DB: /data/plugin-catalog.db
+      PLUGIN_CATALOG_ARTIFACT_ROOT: /data/artifacts
+      PLUGIN_CATALOG_UPLOAD_TOKEN: dev-token
+      PLUGIN_CATALOG_BASE_URL: http://host.docker.internal:3100
+    ports:
+      - target: 3100
+        published: 3100
+        protocol: tcp
+        mode: host
+    volumes:
+      - type: bind
+        source: /Users/ygpark2/pjt/ainsoft/aisopsflow/aisopsflow-plugin-catalog/server/plugin-catalog.db
+        target: /data/plugin-catalog.db
+      - type: bind
+        source: /Users/ygpark2/pjt/ainsoft/aisopsflow/aisopsflow-plugin-catalog/server/artifacts
+        target: /data/artifacts
+      - type: bind
+        source: /Users/ygpark2/pjt/ainsoft/aisopsflow/aisopsflow-plugin-catalog/server/client_session_key.aes
+        target: /app/client_session_key.aes
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
