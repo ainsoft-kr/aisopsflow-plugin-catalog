@@ -14,6 +14,7 @@ module PluginCatalogServer.Foundation
   ) where
 
 import Data.Text (Text)
+import Data.Word (Word64)
 import Database.Persist.Sqlite (ConnectionPool, SqlBackend, runSqlPool)
 import Network.HTTP.Client (Manager)
 import PluginCatalogServer.Settings (AppSettings(..))
@@ -27,7 +28,9 @@ data App = App
 
 mkYesodData "App" $(parseRoutesFile "config/routes")
 
-instance Yesod App
+instance Yesod App where
+  maximumContentLength master (Just PublishPluginR) = Just (fromIntegral (appMaxUploadBytes (appSettings master)) :: Word64)
+  maximumContentLength _ _ = Nothing
 
 instance YesodPersist App where
   type YesodPersistBackend App = SqlBackend

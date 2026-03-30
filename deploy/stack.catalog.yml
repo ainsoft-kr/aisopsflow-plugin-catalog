@@ -7,7 +7,11 @@ services:
       PLUGIN_CATALOG_PORT: "3100"
       PLUGIN_CATALOG_DB: /data/plugin-catalog.db
       PLUGIN_CATALOG_ARTIFACT_ROOT: /data/artifacts
+      PLUGIN_CATALOG_MAX_UPLOAD_BYTES: "104857600"
       PLUGIN_CATALOG_UPLOAD_TOKEN: dev-token
+      PLUGIN_CATALOG_BOOTSTRAP_ADMIN_USERNAME: admin
+      PLUGIN_CATALOG_BOOTSTRAP_ADMIN_PASSWORD: change-me
+      PLUGIN_CATALOG_BOOTSTRAP_ADMIN_DISPLAY_NAME: Administrator
       PLUGIN_CATALOG_BASE_URL: http://host.docker.internal:3100
     ports:
       - target: 3100

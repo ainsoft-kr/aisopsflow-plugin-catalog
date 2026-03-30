@@ -18,7 +18,7 @@ capabilities_csv="$9"
 bundle_path="${10}"
 core_base_url="${11:-}"
 core_bearer_token="${12:-}"
-first_capability="${capabilities_csv%%,*}"
+IFS=',' read -r -a capabilities <<< "$capabilities_csv"
 
 script_dir="$(cd "$(dirname "$0")" && pwd)"
 
@@ -56,18 +56,20 @@ curl --fail --silent --show-error \
   -d '{"channel":"stable"}' \
   "${catalog_base_url}/api/plugins/${plugin_name}/${version}/promote" >/dev/null
 
-echo "[smoke] resolve ${first_capability} from stable"
-resolve_payload="$(
-  curl --fail --silent --show-error \
-    "${catalog_base_url}/api/resolve/${first_capability}?platform=${platform}&channel=stable"
-)"
-printf '%s\n' "$resolve_payload" | ruby -rjson -e '
+for capability in "${capabilities[@]}"; do
+  echo "[smoke] resolve ${capability} from stable"
+  resolve_payload="$(
+    curl --fail --silent --show-error \
+      "${catalog_base_url}/api/resolve/${capability}?platform=${platform}&channel=stable"
+  )"
+  printf '%s\n' "$resolve_payload" | ruby -rjson -e '
 payload = JSON.parse(STDIN.read)
 artifact_url = payload.fetch("plugin").fetch("artifact").fetch("url")
 abort("resolve payload missing artifact url") if artifact_url.to_s.empty?
 source = payload["source"].to_s
 abort("unexpected resolve source: #{source}") unless source.include?("stable")
 '
+done
 
 echo "[smoke] validate catalog repository"
 ( cd "${script_dir}/.." && ruby scripts/validate-catalog.rb )
@@ -77,13 +79,15 @@ if [ -n "$core_base_url" ]; then
     echo "core bearer token is required when core base url is provided" >&2
     exit 1
   fi
-  echo "[smoke] apply core override for ${first_capability}"
-  curl --fail --silent --show-error \
-    -X PUT \
-    -H "Authorization: Bearer ${core_bearer_token}" \
-    -H "Content-Type: application/json" \
-    -d "$(printf '{"capability":"%s","plugin_ref":"","manifest_path":"runner-plugin.yaml","channel":"stable","enabled":true}' "$first_capability")" \
-    "${core_base_url%/}/api/ops/catalog-overrides/${first_capability}" >/dev/null
+  for capability in "${capabilities[@]}"; do
+    echo "[smoke] apply core override for ${capability}"
+    curl --fail --silent --show-error \
+      -X PUT \
+      -H "Authorization: Bearer ${core_bearer_token}" \
+      -H "Content-Type: application/json" \
+      -d "$(printf '{"capability":"%s","plugin_ref":"","manifest_path":"runner-plugin.yaml","channel":"stable","enabled":true}' "$capability")" \
+      "${core_base_url%/}/api/ops/catalog-overrides/${capability}" >/dev/null
+  done
 fi
 
 echo "[smoke] success"

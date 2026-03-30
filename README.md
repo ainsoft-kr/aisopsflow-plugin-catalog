@@ -19,6 +19,30 @@ Catalog entries may point to either:
 This repository does not build or publish plugin artifacts by itself.
 It tracks plugin metadata, compatibility, and verification state for OCI- and bundle-based plugins.
 
+## Admin Login
+
+There is no built-in default admin username/password.
+
+- The catalog server creates admin users only when one of these environment variables is set at startup:
+- `PLUGIN_CATALOG_BOOTSTRAP_ADMIN_USERNAME` and `PLUGIN_CATALOG_BOOTSTRAP_ADMIN_PASSWORD`
+- `PLUGIN_CATALOG_SEED_OWNER_PASSWORD`
+- `PLUGIN_CATALOG_SEED_ADMIN_PASSWORD`
+- `PLUGIN_CATALOG_SEED_PUBLISHER_PASSWORD`
+- `PLUGIN_CATALOG_SEED_VIEWER_PASSWORD`
+
+With the current default deploy file [`deploy/stack.catalog.yml`](/Users/ygpark2/pjt/ainsoft/aisopsflow/aisopsflow-plugin-catalog/deploy/stack.catalog.yml), only `PLUGIN_CATALOG_UPLOAD_TOKEN=dev-token` is configured, so no admin account is created automatically.
+
+Example bootstrap config:
+
+```bash
+PLUGIN_CATALOG_BOOTSTRAP_ADMIN_USERNAME=admin
+PLUGIN_CATALOG_BOOTSTRAP_ADMIN_PASSWORD=change-me
+PLUGIN_CATALOG_BOOTSTRAP_ADMIN_DISPLAY_NAME=Administrator
+```
+
+Bundle upload size is controlled by `PLUGIN_CATALOG_MAX_UPLOAD_BYTES`.
+The default in [`deploy/stack.catalog.yml`](/Users/ygpark2/pjt/ainsoft/aisopsflow/aisopsflow-plugin-catalog/deploy/stack.catalog.yml) is `104857600` (100 MiB).
+
 ## Layout
 
 - `plugins/official/`
@@ -34,6 +58,12 @@ The default operational entrypoints are exposed through `make`:
 ```bash
 make help
 make server-run
+make server-stop
+make server-restart
+make swarm-local-build
+make swarm-local-up
+make swarm-local-down
+make swarm-local-restart
 make validate
 make publish-export BUNDLE_PATH=/path/to/bundle.tar.gz
 make promote CHANNEL=stable

@@ -16,6 +16,7 @@ data AppSettings = AppSettings
   { appPort :: Int
   , appSqlitePath :: Text
   , appArtifactRoot :: FilePath
+  , appMaxUploadBytes :: Integer
   , appUploadToken :: Text
   , appAdminToken :: Maybe Text
   , appBootstrapAdminUsername :: Maybe Text
@@ -34,6 +35,7 @@ loadAppSettings = do
   port <- readEnvInt "PLUGIN_CATALOG_PORT" 3100
   sqlitePath <- readEnvText "PLUGIN_CATALOG_DB" "plugin-catalog.db"
   artifactRoot <- readEnvString "PLUGIN_CATALOG_ARTIFACT_ROOT" "./artifacts"
+  maxUploadBytes <- readEnvInteger "PLUGIN_CATALOG_MAX_UPLOAD_BYTES" (100 * 1024 * 1024)
   uploadToken <- readEnvText "PLUGIN_CATALOG_UPLOAD_TOKEN" "dev-token"
   adminToken <- readEnvMaybeText "PLUGIN_CATALOG_ADMIN_TOKEN"
   bootstrapAdminUsername <- readEnvMaybeText "PLUGIN_CATALOG_BOOTSTRAP_ADMIN_USERNAME"
@@ -49,6 +51,7 @@ loadAppSettings = do
       { appPort = port
       , appSqlitePath = sqlitePath
       , appArtifactRoot = artifactRoot
+      , appMaxUploadBytes = maxUploadBytes
       , appUploadToken = uploadToken
       , appAdminToken = adminToken
       , appBootstrapAdminUsername = bootstrapAdminUsername
@@ -77,6 +80,11 @@ readEnvString key fallback = maybe fallback id <$> lookupEnv key
 
 readEnvInt :: String -> Int -> IO Int
 readEnvInt key fallback = do
+  raw <- lookupEnv key
+  pure $ maybe fallback id (raw >>= readMaybe)
+
+readEnvInteger :: String -> Integer -> IO Integer
+readEnvInteger key fallback = do
   raw <- lookupEnv key
   pure $ maybe fallback id (raw >>= readMaybe)
 
